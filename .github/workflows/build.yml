@@ -1,4 +1,4 @@
-name: C++ Build and Artifact Export
+name: Windows Build and Artifact Export
 
 on:
   push:
@@ -12,35 +12,30 @@ jobs:
   build:
     runs-on: windows-latest
 
-
     steps:
     - name: 📥 Checkout repository
-      uses: actions/checkout@v4   # ✅ 同步升级到 v4
+      uses: actions/checkout@v4
 
-    - name: ⚙️ Install GCC
+    - name: 🏗️ Build C++ project (using MSVC)
+      shell: cmd
       run: |
-        sudo apt update
-        sudo apt install -y g++
+        echo 编译中...
+        cl /EHsc main.cpp /Fecrash_simulator.exe
+        echo ✅ 编译完成！
 
-    - name: 🏗️ Build C++ Project
+    - name: 🚀 Run the program safely
+      shell: cmd
       run: |
-        echo "正在编译程序..."
-        g++ -o crash_simulator main.cpp -std=c++11
-        echo "✅ 编译成功，开始执行..."
+        echo 运行模拟程序（会触发崩溃测试）
+        crash_simulator.exe || exit /b 0
+        echo ✅ 执行结束
 
-    - name: 🚀 Run program safely
-      run: |
-        echo "运行模拟程序（会触发崩溃测试）"
-        ./crash_simulator || true
-        echo "✅ 运行结束"
-
-    # ✅ 已更新：使用最新 actions/upload-artifact@v4
     - name: 📦 Upload build artifact
       uses: actions/upload-artifact@v4
       with:
         name: crash_simulator_build
         path: |
-          crash_simulator
+          crash_simulator.exe
           main.cpp
           README.md
           CMakeLists.txt
