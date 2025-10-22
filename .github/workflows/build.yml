@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2  # 获取代码
+      uses: actions/checkout@v2  # 获取代
 
     - name: Install g++ (for compilation)
       run: sudo apt update && sudo apt install -y g++  # 安装 g++ 编译器
