@@ -1,43 +1,37 @@
-name: Windows Build and Artifact Export
+name: C++ Build and Crash Simulation
 
 on:
   push:
     branches:
-      - "**"
+      - main
   pull_request:
     branches:
-      - "**"
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest  # 使用 Ubuntu 构建环境
 
     steps:
-    - name: 📥 Checkout repository
-      uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-    - name: ⚙️ Setup MSVC build environment
-      shell: cmd
+    - name: Install g++ (for compilation)
+      run: sudo apt update && sudo apt install -y g++
+
+    - name: Compile crash simulator
       run: |
-        echo 正在加载 Visual Studio 编译环境...
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
-        echo 编译中...
-        cl /EHsc main.cpp /Fecrash_simulator.exe
-        echo ✅ 编译完成！
+        g++ -o crash_simulator crash_simulator.cpp -std=c++11 -pthread
+        echo "编译完成！"
 
-    - name: 🚀 Run the program safely
-      shell: cmd
+    - name: Run crash simulator
       run: |
-        echo 运行模拟程序（会触发崩溃测试）
-        crash_simulator.exe || exit /b 0
-        echo ✅ 执行结束
+        ./crash_simulator || true  # 使用 || true 防止崩溃导致 GitHub Actions 失败
 
-    - name: 📦 Upload build artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload crash simulator output
+      uses: actions/upload-artifact@v2
       with:
-        name: crash_simulator_build
+        name: crash_simulator_output
         path: |
-          crash_simulator.exe
-          main.cpp
-          README.md
-          CMakeLists.txt
+          crash_simulator
+          crash_simulator.cpp
