@@ -10,28 +10,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 在 Ubuntu 环境中执行
+    runs-on: windows-latest  # 使用 Windows 构建环境
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2  # 获取仓库中的代码
 
     - name: Install g++ (for compilation)
-      run: sudo apt update && sudo apt install -y g++  # 安装 g++ 编译器
+      run: choco install mingw # 安装 MinGW 编译器
 
     - name: Compile crash simulator
       run: |
-        g++ -o crash_simulator crash_simulator.cpp -std=c++11 -pthread  # 编译 C++ 文件
+        g++ -o crash_simulator.exe crash_simulator.cpp -std=c++11 -pthread  # 编译 C++ 文件并生成 .exe
         echo "编译完成！"
 
     - name: Run crash simulator
       run: |
-        ./crash_simulator || true  # 运行崩溃模拟器，`|| true` 防止崩溃导致失败
+        ./crash_simulator.exe || true  # 运行崩溃模拟器，`|| true` 防止崩溃导致失败
 
     - name: Upload crash simulator output
       uses: actions/upload-artifact@v4  # 使用 v4 版本上传构建产物
       with:
         name: crash_simulator_output  # 上传的 artifact 名称
         path: |
-          crash_simulator
-          crash_simulator.cpp  # 上传源代码文件，便于后续下载和查看
+          crash_simulator.exe  # 上传 .exe 文件
