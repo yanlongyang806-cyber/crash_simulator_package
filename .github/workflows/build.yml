@@ -1,6 +1,5 @@
-name: C++ Build and Test
+name: C++ Build and Save Executable
 
-# 🔸 当 push 或 PR 到任意分支都会触发（不再仅限 master）
 on:
   push:
     branches:
@@ -11,24 +10,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 在 Ubuntu 服务器上构建
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up GCC
+    - name: Install GCC
       run: |
         sudo apt update
         sudo apt install -y g++
 
     - name: Build project
       run: |
-        echo "📦 开始编译..."
+        echo "📦 正在编译..."
         g++ -o crash_simulator main.cpp -std=c++11
-        echo "✅ 编译完成"
-
-    - name: Run the simulator
-      run: |
-        echo "🚀 启动程序（注意：这会触发崩溃模拟）"
-        ./crash_simulator || true
