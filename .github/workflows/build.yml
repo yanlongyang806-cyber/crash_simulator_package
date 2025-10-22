@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: 📥 Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4   # ✅ 同步升级到 v4
 
     - name: ⚙️ Install GCC
       run: |
@@ -33,8 +33,9 @@ jobs:
         ./crash_simulator || true
         echo "✅ 运行结束"
 
-    - name: 📦 Upload build artifact (可下载产物)
-      uses: actions/upload-artifact@v3
+    # ✅ 已更新：使用最新 actions/upload-artifact@v4
+    - name: 📦 Upload build artifact
+      uses: actions/upload-artifact@v4
       with:
         name: crash_simulator_build
         path: |
