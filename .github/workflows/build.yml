@@ -3,14 +3,14 @@ name: C++ Build and Crash Simulation
 on:
   push:
     branches:
-      - main
+      - main  # 触发 `main` 分支的推送
   pull_request:
     branches:
-      - main
+      - main  # 触发 `main` 分支的拉取请求
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 构建环境
+    runs-on: ubuntu-latest  # 在 Ubuntu 环境中执行
 
     steps:
     - name: Checkout Repository
@@ -26,12 +26,12 @@ jobs:
 
     - name: Run crash simulator
       run: |
-        ./crash_simulator || true  # 运行程序，使用 || true 防止崩溃导致工作流失败
+        ./crash_simulator || true  # 运行崩溃模拟器程序，`|| true` 防止崩溃导致失败
 
     - name: Upload crash simulator output
       uses: actions/upload-artifact@v4  # 使用 v4 版本上传构建产物
       with:
-        name: crash_simulator_output  # 设置上传的 artifact 名称
+        name: crash_simulator_output  # 上传的 artifact 名称
         path: |
           crash_simulator
           crash_simulator.cpp
