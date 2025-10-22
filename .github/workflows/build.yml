@@ -29,7 +29,7 @@ jobs:
         ./crash_simulator || true  # 使用 || true 防止崩溃导致 GitHub Actions 失败
 
     - name: Upload crash simulator output
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3  # 更新为 v3
       with:
         name: crash_simulator_output
         path: |
