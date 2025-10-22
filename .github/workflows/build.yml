@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2  # 获取代码
+      uses: actions/checkout@v2  # 获取仓库中的代码
 
     - name: Install g++ (for compilation)
       run: sudo apt update && sudo apt install -y g++  # 安装 g++ 编译器
@@ -26,7 +26,7 @@ jobs:
 
     - name: Run crash simulator
       run: |
-        ./crash_simulator || true  # 运行崩溃模拟器程序，`|| true` 防止崩溃导致失败
+        ./crash_simulator || true  # 运行崩溃模拟器，`|| true` 防止崩溃导致失败
 
     - name: Upload crash simulator output
       uses: actions/upload-artifact@v4  # 使用 v4 版本上传构建产物
@@ -34,4 +34,4 @@ jobs:
         name: crash_simulator_output  # 上传的 artifact 名称
         path: |
           crash_simulator
-          crash_simulator.cpp
+          crash_simulator.cpp  # 上传源代码文件，便于后续下载和查看
