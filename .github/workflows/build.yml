@@ -1,0 +1,31 @@
+
+name: C++ Build and Test
+
+on:
+  push:
+    branches:
+      - master  # 只在 master 分支上触发
+  pull_request:
+    branches:
+      - master  # 在拉取请求时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用 Ubuntu 环境进行编译
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # 检出仓库代码
+
+    - name: Set up GCC
+      run: |
+        sudo apt update
+        sudo apt install g++ -y  # 安装 g++ 编译器
+
+    - name: Build the project
+      run: |
+        g++ -o crash_simulator main.cpp -std=c++11  # 编译 C++ 文件
+
+    - name: Run the simulator
+      run: |
+        ./crash_simulator  # 运行生成的可执行文件
